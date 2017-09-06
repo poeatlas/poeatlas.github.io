@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 source ./environment
 
@@ -60,20 +60,46 @@ npm install
 npm run build
 cd ..
 
+TMP_DIR=$(mktemp -d)
+
 #push Art to poeatlas site project
 #git clone https://${GH_TOKEN}@github.com/poeatlas/poeatlas.github.io.git
-git stash -u
+#git stash -u
 git remote set-url origin https://${GH_TOKEN}@github.com/poeatlas/poeatlas.github.io.git
 git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
 git pull origin master
 #git fetch origin master
 cp  -R ./atlas-ui/build/* .
-cp -Rf ./Content.ggpk/Art .
-find ./Art -name '*.dds' -exec rm -rf {} \;
+mv ./Content.ggpk/Art ${TMP_DIR}
+mv ./atlas-ui/build/* ${TMP_DIR}
+#mv ./index.html .${TMP_DIR}
+#mv ./static .${TMP_DIR}
+#mv ./favicon.ico .${TMP_DIR}
 
 git checkout master
-git stash pop
-git rm -rf ./Art/ ./index.html ./static ./favicon.ico
+
+if [ -d ./Art ];
+then
+  git rm -rf ./Art
+fi
+
+if [ -e ./index.html ];
+then
+  git rm -rf ./index.html
+fi
+
+if [ -d ./static ];
+then
+  git rm -rf ./static
+fi
+
+if [ -e ./favicon.ico ];
+then
+  git rm -rf ./favicon.ico
+fi
+
+mv ${TMP_DIR}/* $PWD
+find ./Art -name '*.dds' -exec rm -rf {} \;
 git add ./Art/ ./index.html ./static ./favicon.ico
 git commit . -m "Updated atlas.json and art files."
 git push
