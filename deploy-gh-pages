@@ -62,6 +62,7 @@ cd ..
 
 #push Art to poeatlas site project
 #git clone https://${GH_TOKEN}@github.com/poeatlas/poeatlas.github.io.git
+git stash -u
 git remote set-url origin https://${GH_TOKEN}@github.com/poeatlas/poeatlas.github.io.git
 git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
 git pull origin master
@@ -71,6 +72,7 @@ cp -Rf ./Content.ggpk/Art .
 find ./Art -name '*.dds' -exec rm -rf {} \;
 
 git checkout master
+git stash pop
 git rm -rf ./Art/ ./index.html ./static ./favicon.ico
 git add ./Art/ ./index.html ./static ./favicon.ico
 git commit . -m "Updated atlas.json and art files."
