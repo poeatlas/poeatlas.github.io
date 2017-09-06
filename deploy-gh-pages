@@ -63,12 +63,13 @@ cd ..
 #push Art to poeatlas site project
 #git clone https://${GH_TOKEN}@github.com/poeatlas/poeatlas.github.io.git
 git remote set-url origin https://${GH_TOKEN}@github.com/poeatlas/poeatlas.github.io.git
-git fetch origin master
+git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+git pull origin master
+#git fetch origin master
 cp  -R ./atlas-ui/build/* .
 cp -Rf ./Content.ggpk/Art .
 find ./Art -name '*.dds' -exec rm -rf {} \;
 
-git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
 git checkout master
 git rm -rf ./Art/ ./index.html ./static ./favicon.ico
 git add ./Art/ ./index.html ./static ./favicon.ico
