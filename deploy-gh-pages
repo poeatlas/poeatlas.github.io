@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-source environment
+source ./environment
 
 MIPMAP=1
 GH_TOKEN=81adc0ab3ebf6c253d45dad1b43ed005f013e849
@@ -34,7 +34,7 @@ git clone https://github.com/poeatlas/Content.ggpk.git
 docker run --rm --name cli --link mysql:mysql \
     -e JAVA_OPTS="$JAVA_OPTS" \
     -v $PWD/Content.ggpk:/usr/src/app \
-    poeatlas/cli \
+    poeatlas/cli:${CLI_VERSION} \
     dat -input /usr/src/app/Data/ -output /usr/src/app/output/atlas.json
 
 cd Content.ggpk
@@ -44,7 +44,7 @@ docker run --rm --name cli --link mysql:mysql \
     -e JAVA_OPTS="$JAVA_OPTS" \
     -v $PWD:/usr/src/app \
     -P \
-    poeatlas/cli \
+    poeatlas/cli:${CLI_VERSION} \
     dds -mipmap ${MIPMAP} -root /usr/src/app/ ${DDS_FILES}
 
 # get out of Content.ggpk dir
