@@ -3,7 +3,6 @@
 source ./environment
 
 MIPMAP=1
-GH_TOKEN=81adc0ab3ebf6c253d45dad1b43ed005f013e849
 
 cleanup() {
     docker stop mysql
@@ -60,7 +59,8 @@ cd ..
 
 #push Art to poeatlas site project
 #git clone https://${GH_TOKEN}@github.com/poeatlas/poeatlas.github.io.git
-git remote set-url origin https://github.com/poeatlas/poeatlas.github.io.git
+git remote set-url origin https://${GH_TOKEN}@github.com/poeatlas/poeatlas.github.io.git
+git fetch
 cp  -R ./atlas-ui/build/* .
 cp -Rf ./Content.ggpk/Art .
 find ./Art -name '*.dds' -exec rm -rf {} \;
