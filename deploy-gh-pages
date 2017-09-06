@@ -1,4 +1,4 @@
-#!/bin/bash -ex
+#!/bin/bash -e
 
 source ./environment
 
@@ -68,6 +68,7 @@ cp  -R ./atlas-ui/build/* .
 cp -Rf ./Content.ggpk/Art .
 find ./Art -name '*.dds' -exec rm -rf {} \;
 
+git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
 git checkout master
 git rm -rf ./Art/ ./index.html ./static ./favicon.ico
 git add ./Art/ ./index.html ./static ./favicon.ico
