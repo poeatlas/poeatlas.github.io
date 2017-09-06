@@ -1,0 +1,77 @@
+#!/bin/bash -e
+
+source environment
+
+MIPMAP=1
+GH_TOKEN=81adc0ab3ebf6c253d45dad1b43ed005f013e849
+
+cleanup() {
+    docker stop mysql
+    docker rm -fv mysql
+}
+
+trap "cleanup" INT TERM EXIT
+
+docker run --name mysql \
+    -e MYSQL_DATABASE=poeatlas \
+    -e MYSQL_ALLOW_EMPTY_PASSWORD=yes \
+    -e MYSQL_USER=poeatlas \
+    -e MYSQL_PASSWORD=poeatlas\
+    -d mysql/mysql-server
+
+while docker ps | grep mysql | grep -qv healthy; do
+    # after 10 minutes, fails
+    sleep 1
+done
+
+JAVA_OPTS="-Dspring.datasource.url=\"jdbc:mysql://mysql:3306/poeatlas?useSSL=false\""
+JAVA_OPTS="$JAVA_OPTS -Dspring.datasource.username=\"poeatlas\""
+JAVA_OPTS="$JAVA_OPTS -Dspring.datasource.password=\"poeatlas\""
+
+#get Content.ggpk data
+git clone https://github.com/poeatlas/Content.ggpk.git
+
+docker run --rm --name cli --link mysql:mysql \
+    -e JAVA_OPTS="$JAVA_OPTS" \
+    -v $PWD/Content.ggpk:/usr/src/app \
+    poeatlas/cli \
+    dat -input /usr/src/app/Data/ -output /usr/src/app/output/atlas.json
+
+cd Content.ggpk
+DDS_FILES=$(find . -name '*.dds')
+
+docker run --rm --name cli --link mysql:mysql \
+    -e JAVA_OPTS="$JAVA_OPTS" \
+    -v $PWD:/usr/src/app \
+    -P \
+    poeatlas/cli \
+    dds -mipmap ${MIPMAP} -root /usr/src/app/ ${DDS_FILES}
+
+# get out of Content.ggpk dir
+cd ..
+
+#copy new atlas.json into atlas-ui submodule and build atlas-ui
+git clone https://github.com/poeatlas/atlas-ui.git
+cp -Rf ./Content.ggpk/output/atlas.json ./atlas-ui/src/resources/atlas.json
+cd atlas-ui
+npm install
+npm run build
+cd ..
+
+#push Art to poeatlas site project
+#git clone https://${GH_TOKEN}@github.com/poeatlas/poeatlas.github.io.git
+git remote set-url origin https://github.com/poeatlas/poeatlas.github.io.git
+cp  -R ./atlas-ui/build/* .
+cp -Rf ./Content.ggpk/Art .
+find ./Art -name '*.dds' -exec rm -rf {} \;
+
+git checkout master
+git rm -rf ./Art/ ./index.html ./static ./favicon.ico
+git add ./Art/ ./index.html ./static ./favicon.ico
+git commit . -m "Updated atlas.json and art files."
+git push
+
+#    -it \
+# bash
+
+#docker run --rm --name cli --net="host" poeatlas/cli dat
