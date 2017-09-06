@@ -30,15 +30,18 @@ JAVA_OPTS="$JAVA_OPTS -Dspring.datasource.password=\"poeatlas\""
 #get Content.ggpk data
 git clone https://github.com/poeatlas/Content.ggpk.git
 
+#create new atlas.json file from dats
 docker run --rm --name cli --link mysql:mysql \
     -e JAVA_OPTS="$JAVA_OPTS" \
     -v $PWD/Content.ggpk:/usr/src/app \
     poeatlas/cli:${CLI_VERSION} \
     dat -input /usr/src/app/Data/ -output /usr/src/app/output/atlas.json
 
+#find all dds files for extraction
 cd Content.ggpk
 DDS_FILES=$(find . -name '*.dds')
 
+#convert dds files to png
 docker run --rm --name cli --link mysql:mysql \
     -e JAVA_OPTS="$JAVA_OPTS" \
     -v $PWD:/usr/src/app \
@@ -60,7 +63,7 @@ cd ..
 #push Art to poeatlas site project
 #git clone https://${GH_TOKEN}@github.com/poeatlas/poeatlas.github.io.git
 git remote set-url origin https://${GH_TOKEN}@github.com/poeatlas/poeatlas.github.io.git
-git fetch
+git fetch origin master
 cp  -R ./atlas-ui/build/* .
 cp -Rf ./Content.ggpk/Art .
 find ./Art -name '*.dds' -exec rm -rf {} \;
