@@ -78,12 +78,14 @@ mv ./atlas-ui/build/* ${TMP_DIR}
 
 git checkout master
 
+ls $PWD
+
 if [ -d ./Art ];
 then
   git rm -rf ./Art
 fi
 
-if [ -e ./index.html ];
+if [ -f ./index.html ];
 then
   git rm -rf ./index.html
 fi
@@ -93,7 +95,7 @@ then
   git rm -rf ./static
 fi
 
-if [ -e ./favicon.ico ];
+if [ -f ./favicon.ico ];
 then
   git rm -rf ./favicon.ico
 fi
