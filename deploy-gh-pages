@@ -103,7 +103,7 @@ fi
 mv ${TMP_DIR}/* $PWD
 find ./Art -name '*.dds' -exec rm -rf {} \;
 git add ./Art/ ./index.html ./static ./favicon.ico
-git commit . -m "Updated atlas.json and art files."
+git commit . -m "[skip ci] Updated atlas.json and art files."
 git push
 
 #    -it \
