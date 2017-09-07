@@ -100,9 +100,20 @@ then
   git rm -rf ./favicon.ico
 fi
 
+if [ -f ./style.css ];
+then
+  git rm -rf ./style.css
+fi
+
+if [ -f ./service-worker.js ];
+then
+  git rm -rf ./service-worker.js
+fi
+
 mv ${TMP_DIR}/* $PWD
 find ./Art -name '*.dds' -exec rm -rf {} \;
-git add ./Art/ ./index.html ./static ./favicon.ico
+#git add ./Art/ ./index.html ./static ./favicon.ico ./style.css ./service-worker.js
+git add .
 git commit . -m "[skip ci] Updated atlas.json and art files."
 git push
 
