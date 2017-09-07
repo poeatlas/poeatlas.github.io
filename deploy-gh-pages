@@ -65,11 +65,13 @@ TMP_DIR=$(mktemp -d)
 #push Art to poeatlas site project
 #git clone https://${GH_TOKEN}@github.com/poeatlas/poeatlas.github.io.git
 #git stash -u
+
 git remote set-url origin https://${GH_TOKEN}@github.com/poeatlas/poeatlas.github.io.git
 git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
 git pull origin master
+
 #git fetch origin master
-cp  -R ./atlas-ui/build/* .
+#cp  -R ./atlas-ui/build/* .
 mv ./Content.ggpk/Art ${TMP_DIR}
 mv ./atlas-ui/build/* ${TMP_DIR}
 #mv ./index.html .${TMP_DIR}
@@ -77,8 +79,6 @@ mv ./atlas-ui/build/* ${TMP_DIR}
 #mv ./favicon.ico .${TMP_DIR}
 
 git checkout master
-
-ls $PWD
 
 if [ -d ./Art ];
 then
