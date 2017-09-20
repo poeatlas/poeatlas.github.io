@@ -113,6 +113,10 @@ fi
 mv ${TMP_DIR}/* $PWD
 find ./Art -name '*.dds' -exec rm -rf {} \;
 #git add ./Art/ ./index.html ./static ./favicon.ico ./style.css ./service-worker.js
+
+rm -rf atlas-ui/
+rm -rf Content.ggpk/
+
 git add .
 git commit . -m "[skip ci] Updated atlas.json and art files."
 git push
