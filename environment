@@ -1,5 +1,5 @@
 #!/bin/bash
 
-export ATLAS_UI_VERSION=0.1.6
+export ATLAS_UI_VERSION=0.1.15
 export GGPK_VERSION=3.0.0
 export CLI_VERSION=0.0.10
