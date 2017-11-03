@@ -72,8 +72,8 @@ git pull origin master
 
 #git fetch origin master
 #cp  -R ./atlas-ui/build/* .
-mv ./Content.ggpk/Art ${TMP_DIR}
-mv ./atlas-ui/build/* ${TMP_DIR}
+cp -rf ./Content.ggpk/Art ${TMP_DIR}
+cp -rf ./atlas-ui/build/* ${TMP_DIR}
 #mv ./index.html .${TMP_DIR}
 #mv ./static .${TMP_DIR}
 #mv ./favicon.ico .${TMP_DIR}
@@ -110,7 +110,7 @@ then
   git rm -rf ./service-worker.js
 fi
 
-mv ${TMP_DIR}/* $PWD
+cp -rf ${TMP_DIR}/* $PWD
 find ./Art -name '*.dds' -exec rm -rf {} \;
 #git add ./Art/ ./index.html ./static ./favicon.ico ./style.css ./service-worker.js
 
