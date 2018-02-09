@@ -1,15 +1,17 @@
 #!/bin/bash -ex
 
-mkdir -p $PWD/${POE_VERSION}
-cp -rf ${TMP_DIR}/* $PWD/${POE_VERSION}
-find $PWD/${POE_VERSION}/Art -name '*.dds' -exec rm -rf {} \;
-#git add ./Art/ ./index.html ./static ./favicon.ico ./style.css ./service-worker.js
+pushFiles() {
+    mkdir -p $PWD/${POE_VERSION}
+    cp -rf ${TMP_DIR}/* $PWD/${POE_VERSION}
+    find $PWD/${POE_VERSION}/Art -name '*.dds' -exec rm -rf {} \;
+    #git add ./Art/ ./index.html ./static ./favicon.ico ./style.css ./service-worker.js
 
-git add $PWD/$POE_VERSION
+    git add $PWD/$POE_VERSION
 
-# remove these files from add list
-git reset atlas-ui/
-git reset Content.ggpk/
+    # remove these files from add list
+    git reset atlas-ui/
+    git reset Content.ggpk/
 
-#git commit -m "[skip ci] Updated atlas.json and art files."
-#git push
+    git commit -m "[skip ci] Updated atlas.json and art files."
+    git push
+}

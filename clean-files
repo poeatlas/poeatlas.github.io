@@ -1,31 +1,33 @@
 #!/bin/bash -ex
 
-if [ -d ./Art ];
-then
-  git rm -rf ./Art
-fi
+cleanFiles() {
+    if [ -d ./Art ];
+    then
+      git rm -rf ./Art
+    fi
 
-if [ -f ./index.html ];
-then
-  git rm -rf ./index.html
-fi
+    if [ -f ./index.html ];
+    then
+      git rm -rf ./index.html
+    fi
 
-if [ -d ./static ];
-then
-  git rm -rf ./static
-fi
+    if [ -d ./static ];
+    then
+      git rm -rf ./static
+    fi
 
-if [ -f ./favicon.ico ];
-then
-  git rm -rf ./favicon.ico
-fi
+    if [ -f ./favicon.ico ];
+    then
+      git rm -rf ./favicon.ico
+    fi
 
-if [ -f ./style.css ];
-then
-  git rm -rf ./style.css
-fi
+    if [ -f ./style.css ];
+    then
+      git rm -rf ./style.css
+    fi
 
-if [ -f ./service-worker.js ];
-then
-  git rm -rf ./service-worker.js
-fi
+    if [ -f ./service-worker.js ];
+    then
+      git rm -rf ./service-worker.js
+    fi
+}

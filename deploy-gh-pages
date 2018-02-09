@@ -1,6 +1,8 @@
 #!/bin/bash -ex
 
 source ./environment
+source ./clean-files
+source ./push-files
 
 MIPMAP=1
 
@@ -56,9 +58,9 @@ export TMP_DIR=$(mktemp -d)
 
 ./prepare-files
 
-./clean-files
+cleanFiles
 
-./push-files
+pushFiles
 
 #    -it \
 # bash
