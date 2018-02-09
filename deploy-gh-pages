@@ -4,6 +4,8 @@ source ./environment
 source ./clean-files
 source ./push-files
 
+export PUBLIC_URL=/$POE_VERSION
+
 MIPMAP=1
 
 cleanup() {
