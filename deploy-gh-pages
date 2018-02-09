@@ -52,76 +52,13 @@ docker run --rm --name cli --link mysql:mysql \
 # get out of Content.ggpk dir
 cd ..
 
-#copy new atlas.json into atlas-ui submodule and build atlas-ui
-git clone https://github.com/poeatlas/atlas-ui.git
-cp -Rf ./Content.ggpk/output/atlas.json ./atlas-ui/src/resources/atlas.json
-cd atlas-ui
-npm install
-npm run build
-cd ..
-
 TMP_DIR=$(mktemp -d)
 
-#push Art to poeatlas site project
-#git clone https://${GH_TOKEN}@github.com/poeatlas/poeatlas.github.io.git
-#git stash -u
+./prepare-files
 
-git remote set-url origin https://${GH_TOKEN}@github.com/poeatlas/poeatlas.github.io.git
-git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
-git pull origin master
+./clean-files
 
-#git fetch origin master
-#cp  -R ./atlas-ui/build/* .
-cp -rf ./Content.ggpk/Art ${TMP_DIR}
-cp -rf ./atlas-ui/build/* ${TMP_DIR}
-#mv ./index.html .${TMP_DIR}
-#mv ./static .${TMP_DIR}
-#mv ./favicon.ico .${TMP_DIR}
-
-git checkout master
-
-if [ -d ./Art ];
-then
-  git rm -rf ./Art
-fi
-
-if [ -f ./index.html ];
-then
-  git rm -rf ./index.html
-fi
-
-if [ -d ./static ];
-then
-  git rm -rf ./static
-fi
-
-if [ -f ./favicon.ico ];
-then
-  git rm -rf ./favicon.ico
-fi
-
-if [ -f ./style.css ];
-then
-  git rm -rf ./style.css
-fi
-
-if [ -f ./service-worker.js ];
-then
-  git rm -rf ./service-worker.js
-fi
-
-cp -rf ${TMP_DIR}/* $PWD
-find ./Art -name '*.dds' -exec rm -rf {} \;
-#git add ./Art/ ./index.html ./static ./favicon.ico ./style.css ./service-worker.js
-
-git add .
-
-# remove these files from add list
-git reset atlas-ui/
-git reset Content.ggpk/
-
-git commit . -m "[skip ci] Updated atlas.json and art files."
-git push
+./push-files
 
 #    -it \
 # bash
