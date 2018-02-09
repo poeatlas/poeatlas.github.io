@@ -52,7 +52,7 @@ docker run --rm --name cli --link mysql:mysql \
 # get out of Content.ggpk dir
 cd ..
 
-TMP_DIR=$(mktemp -d)
+export TMP_DIR=$(mktemp -d)
 
 ./prepare-files
 
