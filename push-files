@@ -8,7 +8,7 @@ pushFiles() {
     find ./${POE_VERSION}/Art -name '*.dds' -exec rm -rf {} \;
     #git add ./Art/ ./index.html ./static ./favicon.ico ./style.css ./service-worker.js
 
-    git add ./$POE_VERSION $PWD/index.html
+    git add ./$POE_VERSION ./index.html
 
     # remove these files from add list
     git reset atlas-ui/
