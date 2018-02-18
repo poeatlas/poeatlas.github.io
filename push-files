@@ -1,13 +1,14 @@
 #!/bin/bash -ex
 
 pushFiles() {
-    rm -rf $PWD/${POE_VERSION}
-    mkdir -p $PWD/${POE_VERSION}
-    cp -rf ${TMP_DIR}/* $PWD/${POE_VERSION}
-    find $PWD/${POE_VERSION}/Art -name '*.dds' -exec rm -rf {} \;
+    rm -rf ./${POE_VERSION}
+    mkdir -p ./${POE_VERSION}
+    cp -rf ./${TMP_DIR}/* ./${POE_VERSION}
+    cp -f ./${POE_VERSION}/index.html ./
+    find ./${POE_VERSION}/Art -name '*.dds' -exec rm -rf {} \;
     #git add ./Art/ ./index.html ./static ./favicon.ico ./style.css ./service-worker.js
 
-    git add $PWD/$POE_VERSION
+    git add ./$POE_VERSION $PWD/index.html
 
     # remove these files from add list
     git reset atlas-ui/
