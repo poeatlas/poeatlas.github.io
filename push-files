@@ -1,6 +1,7 @@
 #!/bin/bash -ex
 
 pushFiles() {
+    rm -rf $PWD/${POE_VERSION}
     mkdir -p $PWD/${POE_VERSION}
     cp -rf ${TMP_DIR}/* $PWD/${POE_VERSION}
     find $PWD/${POE_VERSION}/Art -name '*.dds' -exec rm -rf {} \;
