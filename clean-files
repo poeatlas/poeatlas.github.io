@@ -1,10 +1,6 @@
 #!/bin/bash -ex
 
 cleanFiles() {
-    if [ -d ./Art ];
-    then
-      git rm -rf ./Art
-    fi
 
     if [ -f ./index.html ];
     then

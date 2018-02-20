@@ -1,27 +1,16 @@
 #!/bin/bash -ex
 
-#copy new atlas.json into atlas-ui submodule and build atlas-ui
-git clone https://github.com/poeatlas/atlas-ui.git
-cp -Rf ./Content.ggpk/output/atlas.json ./atlas-ui/src/resources/atlas.json
-cd atlas-ui
-npm install
-npm run build
-cd ..
+prepareFiles() {
+    #copy new atlas.json into atlas-ui submodule and build atlas-ui
+    git clone https://github.com/poeatlas/atlas-ui.git
+    cd atlas-ui
+    npm install
+    npm run build
+    cd ..
 
-#push Art to poeatlas site project
-#git clone https://${GH_TOKEN}@github.com/poeatlas/poeatlas.github.io.git
-#git stash -u
+    git remote set-url origin https://${GH_TOKEN}@github.com/poeatlas/poeatlas.github.io.git
+    git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+    git pull origin master
 
-git remote set-url origin https://${GH_TOKEN}@github.com/poeatlas/poeatlas.github.io.git
-git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
-git pull origin master
-
-#git fetch origin master
-#cp  -R ./atlas-ui/build/* .
-cp -rf ./Content.ggpk/Art ${TMP_DIR}
-cp -rf ./atlas-ui/build/* ${TMP_DIR}
-#mv ./index.html .${TMP_DIR}
-#mv ./static .${TMP_DIR}
-#mv ./favicon.ico .${TMP_DIR}
-
-git checkout master
+    git checkout master
+}

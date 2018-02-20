@@ -6,65 +6,8 @@ source ./push-files
 
 export PUBLIC_URL=/$POE_VERSION
 
-MIPMAP=1
-
-cleanup() {
-    docker stop mysql
-    docker rm -fv mysql
-}
-
-trap "cleanup" INT TERM EXIT
-
-docker run --name mysql \
-    -e MYSQL_DATABASE=poeatlas \
-    -e MYSQL_ALLOW_EMPTY_PASSWORD=yes \
-    -e MYSQL_USER=poeatlas \
-    -e MYSQL_PASSWORD=poeatlas\
-    -d mysql/mysql-server
-
-while docker ps | grep mysql | grep -qv healthy; do
-    # after 10 minutes, fails
-    sleep 1
-done
-
-JAVA_OPTS="-Dspring.datasource.url=\"jdbc:mysql://mysql:3306/poeatlas?useSSL=false\""
-JAVA_OPTS="$JAVA_OPTS -Dspring.datasource.username=\"poeatlas\""
-JAVA_OPTS="$JAVA_OPTS -Dspring.datasource.password=\"poeatlas\""
-
-#get Content.ggpk data
-git clone https://github.com/poeatlas/Content.ggpk.git
-
-#create new atlas.json file from dats
-docker run --rm --name cli --link mysql:mysql \
-    -e JAVA_OPTS="$JAVA_OPTS" \
-    -v $PWD/Content.ggpk:/usr/src/app \
-    poeatlas/cli:${CLI_VERSION} \
-    dat -input /usr/src/app/Data/ -output /usr/src/app/output/atlas.json
-
-#find all dds files for extraction
-cd Content.ggpk
-DDS_FILES=$(find . -name '*.dds')
-
-#convert dds files to png
-docker run --rm --name cli --link mysql:mysql \
-    -e JAVA_OPTS="$JAVA_OPTS" \
-    -v $PWD:/usr/src/app \
-    -P \
-    poeatlas/cli:${CLI_VERSION} \
-    dds -mipmap ${MIPMAP} -root /usr/src/app/ ${DDS_FILES}
-
-# get out of Content.ggpk dir
-cd ..
-
-export TMP_DIR=$(mktemp -d)
-
-./prepare-files
+prepareFiles
 
 cleanFiles
 
 pushFiles
-
-#    -it \
-# bash
-
-#docker run --rm --name cli --net="host" poeatlas/cli dat
