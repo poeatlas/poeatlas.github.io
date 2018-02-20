@@ -3,6 +3,7 @@
 source ./environment
 source ./clean-files
 source ./push-files
+source ./prepare-files
 
 export PUBLIC_URL=/$POE_VERSION
 
