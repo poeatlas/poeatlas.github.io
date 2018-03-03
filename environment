@@ -1,4 +1,4 @@
 #!/bin/bash
 
-export ATLAS_UI_VERSION=0.1.25
-export POE_VERSION=3.0.0
+export ATLAS_UI_VERSION=0.2.3
+export POE_VERSION=3.2
